@@ -1,0 +1,4 @@
+from datetime import datetime, timezone
+
+# Use timezone-aware UTC datetime
+current_time = datetime.now(timezone.utc).isoformat()  # Save in UTC ISO 8601 format
