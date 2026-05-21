@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
-from flask_socketio import SocketIO, emit, join_room, leave_room
+from flask_socketio import SocketIO, emit, send, join_room, leave_room
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from datetime import datetime
 from datetime import timedelta
@@ -21,7 +21,7 @@ def init_db():
     cursor = conn.cursor()
     current_time = datetime.utcnow().isoformat()  # Save in UTC ISO 8601 format
 
-        # Users table
+    # Users table
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -93,7 +93,7 @@ def register():
     conn = sqlite3.connect('chat.db')
     cursor = conn.cursor()
     try:
-        cursor.execute('INSERT INTO users (username, password) VALUES (?, ?, ?)', (username, password))
+        cursor.execute('INSERT INTO users (username, password) VALUES (?, ?)', (username, password))
         conn.commit()
     except sqlite3.IntegrityError:
         return "Username already exists.Try another one..", 400
@@ -275,7 +275,7 @@ def handle_send_message(data):
     conn = sqlite3.connect('chat.db')
     cursor = conn.cursor()
 
-    stamp = datatime.get('timestamp', datetime.utcnow().isoformat())
+    timestamp = date.get('timestamp', datetime.utcnow().isoformat())
 
     # Save the message to the database
     cursor.execute(
